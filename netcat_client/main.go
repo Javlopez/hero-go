@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -15,11 +16,20 @@ const (
 )
 
 func main() {
+
+	portInput := flag.String("port", port, "set port")
+	flag.Parse()
+	startClient(*portInput)
+}
+
+func startClient(port string) {
 	conn, err := net.Dial(networkType, fmt.Sprintf("%s:%s", host, port))
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Printf("[Listen TCP server in port: %s]\n", port)
 
 	defer conn.Close()
 	mustCopy(os.Stdout, conn)

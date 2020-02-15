@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -16,10 +17,19 @@ const (
 
 func main() {
 
-	listener, err := net.Listen(networkType, fmt.Sprintf("%s:%s", host, port))
+	portInput := flag.String("port", port, "set port")
+	flag.Parse()
+
+	startServer(*portInput)
+}
+
+func startServer(portNumber string) {
+	listener, err := net.Listen(networkType, fmt.Sprintf("%s:%s", host, portNumber))
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Printf("[Starting TCP server listen in port: %s]\n", portNumber)
 
 	for {
 		conn, err := listener.Accept()
