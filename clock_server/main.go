@@ -19,7 +19,6 @@ func main() {
 
 	portInput := flag.String("port", port, "set port")
 	flag.Parse()
-
 	startServer(*portInput)
 }
 
