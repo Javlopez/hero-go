@@ -24,9 +24,12 @@ func receive(e, o, q <-chan int) {
 			fmt.Println("From the eve channel:", v)
 		case v := <-o:
 			fmt.Println("From the odd channel:", v)
-		case v := <-q:
-			fmt.Println("From the quit channel:", v)
-			return
+		case i, ok := <-q:
+			if !ok {
+				fmt.Println("From comma ok:", i, ok)
+				return
+			}
+			fmt.Println("From comma ok:", i)
 		}
 	}
 }
@@ -39,7 +42,5 @@ func send(e, o, q chan<- int) {
 			o <- i
 		}
 	}
-	close(e)
-	close(o)
-	q <- 0
+	close(q)
 }
