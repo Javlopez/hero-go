@@ -1,12 +1,11 @@
 package main
 
-import "fmt"
-
-import "sync"
-
-import "time"
-
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+	"sync"
+	"time"
+)
 
 func main() {
 	c1 := make(chan int)
