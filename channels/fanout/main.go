@@ -32,14 +32,19 @@ func populate(c chan int) {
 
 func fanOutIn(c1, c2 chan int) {
 	var wg sync.WaitGroup
+	const goroutines = 10
 
-	for v := range c1 {
-		wg.Add(1)
+	wg.Add(goroutines)
 
-		go func(v2 int) {
-			c2 <- timeConsumingWork(v2)
+	for i := 0; i < goroutines; i++ {
+		go func() {
+			for v := range c1 {
+				func(v2 int) {
+					c2 <- timeConsumingWork(v2)
+				}(v)
+			}
 			wg.Done()
-		}(v)
+		}()
 	}
 
 	wg.Wait()
